@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--option 1-->
+    <color name="colorPrimaryLight">#FFD54F</color>
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#FFA000</color>
+    <color name="colorAccent">#FF6F00</color>
+
+
+    <!--Option 2 TOO YELLOW -->
+    <!--<color name="colorPrimary">#FFEB3B</color>-->
+    <!--<color name="colorPrimaryDark">#FBC02D</color>-->
+    <!--<color name="colorAccent">#F57F17</color>-->
+
+    <!--Status button color-->
+    <color name="bg_status_not_started">#B0BEC5</color>
+    <color name="bg_status_in_progress">#FFE082</color>
+    <color name="bg_status_done">#A5D6A7</color>
+    <color name="bg_status_blocked">#EF9A9A</color>
+
+</resources>

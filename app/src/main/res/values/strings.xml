@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Next Idea</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="formatter_item_last_edit">Last edit %s</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="accessibility_save_button">save button</string>
+    <string name="category_dialog_title">Category</string>
+</resources>
