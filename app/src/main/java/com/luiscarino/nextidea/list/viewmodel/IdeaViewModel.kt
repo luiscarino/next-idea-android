@@ -2,14 +2,24 @@ package com.luiscarino.nextidea.list.viewmodel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LiveData
+import com.luiscarino.nextidea.list.model.room.entity.Category
 import com.luiscarino.nextidea.list.model.room.entity.Idea
+import com.luiscarino.nextidea.list.model.room.entity.Status
 import com.luiscarino.nextidea.list.model.room.repository.IdeaRepository
 import kotlinx.coroutines.experimental.launch
 
 class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: Application)
     : AndroidViewModel(nextIdeaApp) {
 
-    fun insert(idea:Idea) {
+    private var categories: LiveData<List<Category>>? = null
+    private var status: LiveData<List<Status>>? = null
+    private var ideas: LiveData<List<Idea>>? = null
+    private val cachedStatus : List<Status>? = null
+    var selectedCategory: Category? = null
+    var selectedStatus: Status? = null
+
+    fun insert(idea: Idea) {
         launch {
             ideaRepository.insert(idea)
         }
@@ -19,12 +29,27 @@ class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: App
         launch { ideaRepository.update(idea) }
     }
 
-    fun getAllIdeas() = ideaRepository.getAllIdeas()
+    fun getAllIdeas(): LiveData<List<Idea>>? {
+        ideas = ideaRepository.getAllIdeas()
+        return ideas
+    }
 
-    fun getAllCategories() = ideaRepository.getAllCategories()
 
-    fun getAllStatus() = ideaRepository.getAllStatus()
+    fun getAllCategories(): LiveData<List<Category>>? {
+        categories = ideaRepository.getAllCategories()
+        return categories
+    }
 
-    fun get(id:Long) = ideaRepository.get(id)
+    fun getAllStatus(): LiveData<List<Status>>? {
+        status = ideaRepository.getAllStatus()
+        return status
+    }
+
+    fun get(id: Long) = ideaRepository.get(id)
+
+    fun updateSelectedCategory(position: Int): Category? {
+        selectedCategory =  categories?.value?.get(position)
+        return selectedCategory
+    }
 
 }

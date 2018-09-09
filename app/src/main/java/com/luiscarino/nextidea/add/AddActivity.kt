@@ -39,20 +39,12 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-
     private val ideaViewModel: IdeaViewModel by inject()
-    // should I move this to eh view model??
-    private lateinit var categories: List<Category>
-    private lateinit var status: List<Status>
-    private var selectedStatusPosition = 0
-    private lateinit var selectedCategory: Category
-    private lateinit var selectedStatus: Status
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val ideaId = intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED)
-
 
         setContentView(R.layout.activity_add)
         toolbar.title = ""
@@ -60,58 +52,68 @@ class AddActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_twotone_keyboard_arrow_left)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        ideaViewModel.getAllCategories()?.observe(this,
-                Observer<List<Category>> { c ->
-                    categories = c!!
-                    selectedCategory = categories[0]
-                    val selectedCategoryTile = selectedCategory.categoryTitle
-                    categoryNameTextView.text = selectedCategoryTile
-                    categoryIcon.setImageResource(toDrawableId(selectedCategoryTile))
-                })
-
-        ideaViewModel.getAllStatus()?.observe(this,
-                Observer<List<Status>> { s ->
-                    status = s!!
-                    selectedStatus = status[0] // default to first status in list
-                    selectedStatusPosition = 0
-                    statusTextView.text = selectedStatus.statusTitle
-                })
-
-        statusTextView.setOnClickListener {
-            moveToNextStatus()
-        }
-
-        categoryNameTextView.setOnClickListener {
-            openCategorySelection()
-        }
-
-        categoryIcon.setOnClickListener {
-            openCategorySelection()
-        }
-
+        getCategoriesAndSetupView()
+        getStatusAndSetupView()
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
 
-
         saveButton.setOnClickListener {
-
             ideaViewModel.insert(Idea(titleTextView.text.toString(),
                     descriptionTextView.text.toString(),
-                    selectedStatus,
-                    selectedCategory
+                    ideaViewModel.selectedStatus!!,
+                    ideaViewModel.selectedCategory!!
             ))
             finish()
         }
 
     }
 
-    private fun getStatusPositionById(statusId: Long?): Long {
-        for (s in status) {
-            if (statusId == s.statusId) {
-                return s.statusId
-            }
+    private fun getStatusAndSetupView() {
+        ideaViewModel.getAllStatus()?.observe(this,
+                Observer<List<Status>> { status ->
+                    val statusPositionOne = status?.get(0)
+                    ideaViewModel.selectedStatus = statusPositionOne
+                    statusTextView.text = statusPositionOne?.statusTitle
+                    statusTextView.setBackgroundColor(resources.getColor(toButtonColor(statusPositionOne?.statusTitle)))
+
+                })
+
+        statusTextView.setOnClickListener {
+            ideaViewModel.getAllStatus()?.observe(this,
+                    Observer<List<Status>> { status ->
+                        var currentStatusIndex = status?.indexOf(ideaViewModel.selectedStatus)
+                        if (currentStatusIndex != -1) {
+                            if (currentStatusIndex == status?.size?.minus(1)) {
+                                ideaViewModel.selectedStatus = status?.get(0)
+                            } else {
+                                ideaViewModel.selectedStatus = status?.get(currentStatusIndex?.inc()!!)
+                            }
+                        }
+
+                        statusTextView.text = ideaViewModel.selectedStatus?.statusTitle
+                        statusTextView.setBackgroundColor(resources.getColor(toButtonColor(ideaViewModel.selectedStatus?.statusTitle)))
+
+                    })
         }
-        return -1
+
+    }
+
+    private fun getCategoriesAndSetupView() {
+        ideaViewModel.getAllCategories()?.observe(this,
+                Observer<List<Category>> { categories ->
+                    ideaViewModel.selectedCategory = categories?.get(0)
+                    val selectedCategoryTile = ideaViewModel.selectedCategory?.categoryTitle
+                    categoryNameTextView.text = selectedCategoryTile
+                    categoryIcon.setImageResource(toDrawableId(selectedCategoryTile))
+                })
+
+        categoryNameTextView.setOnClickListener {
+            showCategorySelectionDialog()
+        }
+
+        categoryIcon.setOnClickListener {
+            showCategorySelectionDialog()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -125,34 +127,22 @@ class AddActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun moveToNextStatus() {
-        if (selectedStatusPosition == status.size - 1) {
-            selectedStatusPosition = 0
-        } else {
-            selectedStatusPosition++
-        }
-        selectedStatus = status[selectedStatusPosition]
-        val selectedStatusTitle = selectedStatus.statusTitle
-        statusTextView.text = selectedStatusTitle
-        statusTextView.setBackgroundColor(resources.getColor(toButtonColor(selectedStatusTitle)))
-    }
+    private fun showCategorySelectionDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle(getString(R.string.category_dialog_title))
 
-    private fun openCategorySelection() {
-        val b = AlertDialog.Builder(this)
-        b.setTitle(getString(R.string.category_dialog_title))
-        val categoriesList: Array<CharSequence> = categories.map { category -> category.categoryTitle as CharSequence }.toTypedArray()
-        b.setItems(categoriesList) { _, which ->
-            selectedCategory = categories[which]
-            updateSelectedCategory(selectedCategory)
-        }
-        b.show()
-    }
+        // get categories and populate dialog
+        ideaViewModel.getAllCategories()?.observe(this, Observer<List<Category>> {
+            val categoriesList: Array<CharSequence>? = it?.map { category -> category.categoryTitle as CharSequence }?.toTypedArray()
+            dialogBuilder.setItems(categoriesList) { _, which ->
+                val newCategory = ideaViewModel.updateSelectedCategory(which)
+                val categoryTitle = newCategory?.categoryTitle
+                categoryNameTextView.text = categoryTitle
+                categoryIcon.setImageResource(toDrawableId(categoryTitle))
+            }
+            dialogBuilder.show()
+        })
 
-
-    private fun updateSelectedCategory(category: Category) {
-        val categoryTitle = category.categoryTitle
-        categoryNameTextView.text = categoryTitle
-        categoryIcon.setImageResource(toDrawableId(categoryTitle))
     }
 
 }

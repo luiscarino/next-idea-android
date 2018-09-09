@@ -1,16 +1,24 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.30'
+    ext.kotlin_version = '1.2.50'
     ext.koin_version = '0.9.3'
+    ext.google_services_version = '4.0.1'
+    ext.frabric_gradle_version = '1.25.4'
     repositories {
         google()
         jcenter()
+        // crashlytics
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
+        classpath "com.google.gms:google-services:$google_services_version"
+        // crashlytics
+        classpath "io.fabric.tools:gradle:$frabric_gradle_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -20,6 +28,10 @@ allprojects {
     repositories {
         google()
         jcenter()
+        // crashlytics
+        maven {
+            url 'https://maven.google.com/'
+        }
     }
     configurations.all {
         resolutionStrategy {

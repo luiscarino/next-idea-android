@@ -25,7 +25,7 @@ abstract class NextIdeaDatabase : RoomDatabase() {
     abstract fun statusDao() : StatusDao
     abstract fun categoryDao() : CategoryDao
 
-    companion object {
+    companion   object {
         private var INSTANCE: NextIdeaDatabase? = null
 
         fun getInstance(context: Context): NextIdeaDatabase? {
