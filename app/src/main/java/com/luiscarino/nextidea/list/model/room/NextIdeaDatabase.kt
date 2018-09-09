@@ -6,7 +6,6 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
-import android.os.AsyncTask
 import com.luiscarino.nextidea.list.model.room.coverter.DateConverter
 import com.luiscarino.nextidea.list.model.room.dao.CategoryDao
 import com.luiscarino.nextidea.list.model.room.dao.IdeaDao

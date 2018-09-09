@@ -18,6 +18,7 @@ import com.luiscarino.nextidea.util.toButtonColor
 import com.luiscarino.nextidea.util.toDrawableId
 import kotlinx.android.synthetic.main.activity_add.*
 import org.koin.android.ext.android.inject
+import java.util.*
 
 /**
  * Activity that handles Ideas add and edit mode.
@@ -43,29 +44,56 @@ class AddActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val ideaId = intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED)
-
         setContentView(R.layout.activity_add)
+
+        setupToolbar()
+        getCategoriesAndSetupView()
+        getStatusAndSetupView()
+
+        val extraIdeaId = intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED)
+        ideaViewModel.isEditMode = extraIdeaId != NO_ID_PROVIDED
+
+        if (ideaViewModel.isEditMode) {
+            ideaViewModel.getIdeaById(extraIdeaId)
+                    ?.observe(this, Observer {
+                        ideaViewModel.selectedStatus = it?.status
+                        ideaViewModel.selectedCategory = it?.category
+                        updateCategoryView(ideaViewModel.selectedCategory)
+                        updateStatusView(ideaViewModel.selectedStatus)
+                        titleTextView.setText(it?.title)
+                        descriptionTextView.setText(it?.description)
+                    })
+
+            saveButton.setOnClickListener {
+                ideaViewModel.update(Idea(titleTextView.text.toString(),
+                        descriptionTextView.text.toString(),
+                        ideaViewModel.selectedStatus!!,
+                        ideaViewModel.selectedCategory!!,
+                        Calendar.getInstance().time,
+                        extraIdeaId
+                ))
+                finish()
+            }
+
+        } else {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+
+            saveButton.setOnClickListener {
+                ideaViewModel.insert(Idea(titleTextView.text.toString(),
+                        descriptionTextView.text.toString(),
+                        ideaViewModel.selectedStatus!!,
+                        ideaViewModel.selectedCategory!!
+                ))
+                finish()
+            }
+        }
+    }
+
+    private fun setupToolbar() {
         toolbar.title = ""
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_twotone_keyboard_arrow_left)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        getCategoriesAndSetupView()
-        getStatusAndSetupView()
-
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-
-        saveButton.setOnClickListener {
-            ideaViewModel.insert(Idea(titleTextView.text.toString(),
-                    descriptionTextView.text.toString(),
-                    ideaViewModel.selectedStatus!!,
-                    ideaViewModel.selectedCategory!!
-            ))
-            finish()
-        }
-
     }
 
     private fun getStatusAndSetupView() {
@@ -81,7 +109,7 @@ class AddActivity : AppCompatActivity() {
         statusTextView.setOnClickListener {
             ideaViewModel.getAllStatus()?.observe(this,
                     Observer<List<Status>> { status ->
-                        var currentStatusIndex = status?.indexOf(ideaViewModel.selectedStatus)
+                        val currentStatusIndex = status?.indexOf(ideaViewModel.selectedStatus)
                         if (currentStatusIndex != -1) {
                             if (currentStatusIndex == status?.size?.minus(1)) {
                                 ideaViewModel.selectedStatus = status?.get(0)
@@ -116,17 +144,6 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            android.R.id.home -> {
-                // Respond to the action bar's Up/Home button
-                NavUtils.navigateUpFromSameTask(this)
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun showCategorySelectionDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle(getString(R.string.category_dialog_title))
@@ -144,5 +161,28 @@ class AddActivity : AppCompatActivity() {
         })
 
     }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                // Respond to the action bar's Up/Home button
+                NavUtils.navigateUpFromSameTask(this)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun updateStatusView(status: Status?) {
+        statusTextView.text = status?.statusTitle
+        statusTextView.setBackgroundColor(resources.getColor(toButtonColor(status?.statusTitle)))
+    }
+
+    private fun updateCategoryView(category: Category?) {
+        categoryNameTextView.text = category?.categoryTitle
+        categoryIcon.setImageResource(toDrawableId(category?.categoryTitle))
+    }
+
 
 }
