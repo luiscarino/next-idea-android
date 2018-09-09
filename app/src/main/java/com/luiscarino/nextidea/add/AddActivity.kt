@@ -28,13 +28,13 @@ class AddActivity : AppCompatActivity() {
         const val NO_ID_PROVIDED = -1L
         private const val INTENT_ARG_ID = "ARG_IDEA_ID"
 
-        fun getIntentInEditMode(ideaId : Long?, packageContext: Context) : Intent {
+        fun getIntentInEditMode(ideaId: Long?, packageContext: Context): Intent {
             val intent = Intent(packageContext, AddActivity::class.java)
             intent.putExtra(INTENT_ARG_ID, ideaId)
             return intent
         }
 
-        fun getIntentAddMode(packageContext: Context) : Intent {
+        fun getIntentAddMode(packageContext: Context): Intent {
             return Intent(packageContext, AddActivity::class.java)
         }
     }
@@ -46,11 +46,12 @@ class AddActivity : AppCompatActivity() {
     private lateinit var status: List<Status>
     private var selectedStatusPosition = 0
     private lateinit var selectedCategory: Category
+    private lateinit var selectedStatus: Status
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val ideaId = intent.getLongExtra("idea.id", NO_ID_PROVIDED)
+        val ideaId = intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED)
 
 
         setContentView(R.layout.activity_add)
@@ -71,11 +72,13 @@ class AddActivity : AppCompatActivity() {
         ideaViewModel.getAllStatus()?.observe(this,
                 Observer<List<Status>> { s ->
                     status = s!!
-                    statusTextView.text = status[selectedStatusPosition].statusTitle
+                    selectedStatus = status[0] // default to first status in list
+                    selectedStatusPosition = 0
+                    statusTextView.text = selectedStatus.statusTitle
                 })
 
         statusTextView.setOnClickListener {
-            moveToNextState()
+            moveToNextStatus()
         }
 
         categoryNameTextView.setOnClickListener {
@@ -94,7 +97,7 @@ class AddActivity : AppCompatActivity() {
 
             ideaViewModel.insert(Idea(titleTextView.text.toString(),
                     descriptionTextView.text.toString(),
-                    status[selectedStatusPosition],
+                    selectedStatus,
                     selectedCategory
             ))
             finish()
@@ -103,7 +106,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun getStatusPositionById(statusId: Long?): Long {
-        for(s in status) {
+        for (s in status) {
             if (statusId == s.statusId) {
                 return s.statusId
             }
@@ -122,18 +125,14 @@ class AddActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun moveToNextState() {
-        updateStatus()
-    }
-
-    private fun updateStatus() {
+    private fun moveToNextStatus() {
         if (selectedStatusPosition == status.size - 1) {
             selectedStatusPosition = 0
         } else {
             selectedStatusPosition++
         }
-
-        val selectedStatusTitle = status[selectedStatusPosition].statusTitle
+        selectedStatus = status[selectedStatusPosition]
+        val selectedStatusTitle = selectedStatus.statusTitle
         statusTextView.text = selectedStatusTitle
         statusTextView.setBackgroundColor(resources.getColor(toButtonColor(selectedStatusTitle)))
     }
