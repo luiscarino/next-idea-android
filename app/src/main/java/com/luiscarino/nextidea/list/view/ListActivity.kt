@@ -1,7 +1,6 @@
 package com.luiscarino.nextidea.list.view
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -31,9 +30,8 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
         setContentView(R.layout.activity_list)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            val intent = Intent(this, AddActivity::class.java)
-            startActivity(intent)
+        fab.setOnClickListener { _ ->
+            startActivity(AddActivity.getIntentAddMode(this))
         }
 
         val ideasAdapter = IdeaListRecyclerViewAdapter(this)
@@ -61,10 +59,6 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_list, menu)
@@ -82,9 +76,7 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
     }
 
     override fun onCardClicked(id:Long?) {
-        val intent = Intent(this, AddActivity::class.java)
-        intent.putExtra("idea.id", id!!)
-        startActivity(intent)
+        startActivity(AddActivity.getIntentInEditMode(id, this))
     }
 
 

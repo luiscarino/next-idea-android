@@ -2,6 +2,8 @@ package com.luiscarino.nextidea.add
 
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NavUtils
 import android.support.v7.app.AppCompatActivity
@@ -17,14 +19,23 @@ import com.luiscarino.nextidea.util.toDrawableId
 import kotlinx.android.synthetic.main.activity_add.*
 import org.koin.android.ext.android.inject
 
-
+/**
+ * Activity that handles Ideas add and edit mode.
+ */
 class AddActivity : AppCompatActivity() {
 
     companion object {
         const val NO_ID_PROVIDED = -1L
+        private const val INTENT_ARG_ID = "ARG_IDEA_ID"
 
-        fun getIntenInEditMode(ideaId : Long) {
+        fun getIntentInEditMode(ideaId : Long?, packageContext: Context) : Intent {
+            val intent = Intent(packageContext, AddActivity::class.java)
+            intent.putExtra(INTENT_ARG_ID, ideaId)
+            return intent
+        }
 
+        fun getIntentAddMode(packageContext: Context) : Intent {
+            return Intent(packageContext, AddActivity::class.java)
         }
     }
 
