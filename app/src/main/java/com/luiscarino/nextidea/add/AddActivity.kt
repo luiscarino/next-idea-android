@@ -1,4 +1,4 @@
-package com.luiscarino.nextidea.add.view
+package com.luiscarino.nextidea.add
 
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
@@ -7,7 +7,6 @@ import android.support.v4.app.NavUtils
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.WindowManager
-import android.widget.TextView
 import com.luiscarino.nextidea.R
 import com.luiscarino.nextidea.list.model.room.entity.Category
 import com.luiscarino.nextidea.list.model.room.entity.Idea
@@ -17,7 +16,6 @@ import com.luiscarino.nextidea.util.toButtonColor
 import com.luiscarino.nextidea.util.toDrawableId
 import kotlinx.android.synthetic.main.activity_add.*
 import org.koin.android.ext.android.inject
-import java.util.*
 
 
 class AddActivity : AppCompatActivity() {

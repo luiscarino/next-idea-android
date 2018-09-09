@@ -2,7 +2,6 @@ package com.luiscarino.nextidea.list.view
 
 import android.arch.lifecycle.Observer
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -10,8 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.luiscarino.nextidea.R
-import com.luiscarino.nextidea.add.view.AddActivity
-import com.luiscarino.nextidea.detail.DetailActivity
+import com.luiscarino.nextidea.add.AddActivity
 import com.luiscarino.nextidea.list.model.room.entity.Idea
 import com.luiscarino.nextidea.list.view.adapter.IdeaListItemDelegateAdapter
 import com.luiscarino.nextidea.list.view.adapter.IdeaListItemRecyclerRecyclerViewType
