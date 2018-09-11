@@ -19,7 +19,7 @@ class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: App
     var selectedCategory: Category? = null
     var selectedStatus: Status? = null
 
-    var isEditMode : Boolean = false
+    var isEditMode: Boolean = false
 
     fun insert(idea: Idea) {
         launch {
@@ -36,8 +36,15 @@ class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: App
         return ideas
     }
 
-    fun getIdeaById(id:Long) : LiveData<Idea>? {
+    fun getIdeaById(id: Long): LiveData<Idea>? {
         return ideaRepository.get(id)
+    }
+
+    fun delete(idea: Idea): Idea {
+        launch {
+            ideaRepository.delete(idea)
+        }
+        return idea
     }
 
 
@@ -54,7 +61,7 @@ class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: App
     fun get(id: Long) = ideaRepository.get(id)
 
     fun updateSelectedCategory(position: Int): Category? {
-        selectedCategory =  categories?.value?.get(position)
+        selectedCategory = categories?.value?.get(position)
         return selectedCategory
     }
 

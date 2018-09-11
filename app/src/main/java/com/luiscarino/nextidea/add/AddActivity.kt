@@ -5,8 +5,10 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.NavUtils
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import com.luiscarino.nextidea.R
@@ -52,9 +54,11 @@ class AddActivity : AppCompatActivity() {
 
         val extraIdeaId = intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED)
         ideaViewModel.isEditMode = extraIdeaId != NO_ID_PROVIDED
-
-        if (ideaViewModel.isEditMode) {
-            ideaViewModel.getIdeaById(extraIdeaId)
+        // show keyboard on add mode
+        if (!ideaViewModel.isEditMode) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        } else {
+            ideaViewModel.getIdeaById(intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED))
                     ?.observe(this, Observer {
                         ideaViewModel.selectedStatus = it?.status
                         ideaViewModel.selectedCategory = it?.category
@@ -63,29 +67,6 @@ class AddActivity : AppCompatActivity() {
                         titleTextView.setText(it?.title)
                         descriptionTextView.setText(it?.description)
                     })
-
-            saveButton.setOnClickListener {
-                ideaViewModel.update(Idea(titleTextView.text.toString(),
-                        descriptionTextView.text.toString(),
-                        ideaViewModel.selectedStatus!!,
-                        ideaViewModel.selectedCategory!!,
-                        Calendar.getInstance().time,
-                        extraIdeaId
-                ))
-                finish()
-            }
-
-        } else {
-            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-
-            saveButton.setOnClickListener {
-                ideaViewModel.insert(Idea(titleTextView.text.toString(),
-                        descriptionTextView.text.toString(),
-                        ideaViewModel.selectedStatus!!,
-                        ideaViewModel.selectedCategory!!
-                ))
-                finish()
-            }
         }
     }
 
@@ -162,6 +143,15 @@ class AddActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_add, menu)
+        if (intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED) == NO_ID_PROVIDED) {
+            menu?.findItem(R.id.action_share)?.isVisible = false
+            menu?.findItem(R.id.action_delete)?.isVisible = false
+        }
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
@@ -169,10 +159,21 @@ class AddActivity : AppCompatActivity() {
                 NavUtils.navigateUpFromSameTask(this)
                 return true
             }
+            R.id.action_save -> {
+                saveOrUpdate()
+                return true
+            }
+            R.id.action_share -> {
+                shareIdea()
+                return true
+            }
+            R.id.action_delete -> {
+                deleteIdea()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
-
 
     private fun updateStatusView(status: Status?) {
         statusTextView.text = status?.statusTitle
@@ -184,5 +185,46 @@ class AddActivity : AppCompatActivity() {
         categoryIcon.setImageResource(toDrawableId(category?.categoryTitle))
     }
 
+    private fun shareIdea() {
+        if (ideaViewModel.isEditMode.not()) return
+
+        val formatTemplate = "%s\n%s\n%s\n%s"
+        ideaViewModel.getIdeaById(intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED))
+                ?.observe(this, Observer {
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, formatTemplate.format(it?.title,
+                                it?.description, it?.status?.statusTitle, it?.category?.categoryTitle))
+                        type = "text/plain"
+                    }
+                    startActivity(Intent.createChooser(sendIntent, getString(R.string.share_your_idea)))
+                })
+    }
+
+    private fun saveOrUpdate() {
+        if (ideaViewModel.isEditMode) {
+            ideaViewModel.update(Idea(titleTextView.text.toString(),
+                    descriptionTextView.text.toString(),
+                    ideaViewModel.selectedStatus!!,
+                    ideaViewModel.selectedCategory!!,
+                    Calendar.getInstance().time,
+                    intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED)
+            ))
+        } else {
+            ideaViewModel.insert(Idea(titleTextView.text.toString(),
+                    descriptionTextView.text.toString(),
+                    ideaViewModel.selectedStatus!!,
+                    ideaViewModel.selectedCategory!!
+            ))
+        }
+        finish()
+    }
+
+    private fun deleteIdea() {
+        if (!ideaViewModel.isEditMode) return
+
+//        ideaViewModel.delete(intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED))
+        Snackbar.make(constraintLayout, "Idea deleted", Snackbar.LENGTH_LONG)
+    }
 
 }
