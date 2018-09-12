@@ -3,7 +3,7 @@ package com.luiscarino.nextidea.list.view.adapter
 import com.luiscarino.nextidea.util.recyclerview.BaseRecyclerViewAdapter
 import com.luiscarino.nextidea.util.recyclerview.RecyclerViewType
 
-class IdeaListRecyclerViewAdapter(actions:IdeaListItemDelegateAdapter.Actions)
+class IdeaListRecyclerViewAdapter(actions: IdeaListItemDelegateAdapter.Actions)
     : BaseRecyclerViewAdapter<RecyclerViewType>() {
 
     init {

@@ -18,6 +18,7 @@ class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: App
 
     var selectedCategory: Category? = null
     var selectedStatus: Status? = null
+    var detailIdea: Idea? = null
 
     var isEditMode: Boolean = false
 
@@ -40,11 +41,14 @@ class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: App
         return ideaRepository.get(id)
     }
 
-    fun delete(idea: Idea): Idea {
+    fun delete(id: Long): LiveData<List<Idea>>? {
         launch {
-            ideaRepository.delete(idea)
+            val toDelete = ideaRepository.getIdeaById(id)
+            if (toDelete != null) {
+                ideaRepository.delete(toDelete)
+            }
         }
-        return idea
+        return getAllIdeas()
     }
 
 

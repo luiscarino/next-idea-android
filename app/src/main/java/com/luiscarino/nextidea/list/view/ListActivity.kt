@@ -1,6 +1,7 @@
 package com.luiscarino.nextidea.list.view
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ import org.koin.android.architecture.ext.viewModel
 class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
 
     private val ideaViewModel: IdeaViewModel by viewModel()
+    lateinit var ideasAdapter: IdeaListRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,29 +36,34 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
             startActivity(AddActivity.getIntentAddMode(this))
         }
 
-        val ideasAdapter = IdeaListRecyclerViewAdapter(this)
+        ideasAdapter = IdeaListRecyclerViewAdapter(this)
         recyclerview.layoutManager = LinearLayoutManager(applicationContext)
         recyclerview.adapter = ideasAdapter
 
-        ideaViewModel.getAllIdeas()?.observe(this,
-                Observer<List<Idea>> { ideaList ->
-                    if (ideaList!!.isEmpty().not()) {
-                        val ideas = ideaList.map { idea: Idea ->
-                            IdeaListItemRecyclerRecyclerViewType(idea.id,
-                                    idea.title,
-                                    idea.description,
-                                    idea.category.categoryId,
-                                    idea.category.categoryTitle,
-                                    idea.lastUpdatedDate.formatToMonthDayYear(),
-                                    idea.status.statusId,
-                                    idea.status.statusTitle)
-                        }
-                        ideasAdapter.setIdeas(ideas)
-                        recyclerview.visibility = View.VISIBLE
-                        emptyListContainer.visibility = View.GONE
-                    }
-                })
 
+        ideaViewModel.getAllIdeas()?.observe(this, fetchIdeasObserver)
+
+    }
+
+    private val fetchIdeasObserver = Observer<List<Idea>> { ideaList ->
+        if (ideaList!!.isEmpty().not()) {
+            val ideas = ideaList.map { idea: Idea ->
+                IdeaListItemRecyclerRecyclerViewType(idea.id,
+                        idea.title,
+                        idea.description,
+                        idea.category.categoryId,
+                        idea.category.categoryTitle,
+                        idea.lastUpdatedDate.formatToMonthDayYear(),
+                        idea.status.statusId,
+                        idea.status.statusTitle)
+            }
+            ideasAdapter.setIdeas(ideas)
+            recyclerview.visibility = View.VISIBLE
+            emptyListContainer.visibility = View.GONE
+        } else {
+            recyclerview.visibility = View.GONE
+            emptyListContainer.visibility = View.VISIBLE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -75,8 +82,20 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
         }
     }
 
-    override fun onCardClicked(id:Long?) {
-        startActivity(AddActivity.getIntentInEditMode(id, this))
+    private val startEditActivityCode = 1000
+    override fun onCardClicked(id: Long?) {
+        startActivityForResult(
+                AddActivity.getIntentInEditMode(id, this),
+                startEditActivityCode)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (startEditActivityCode == requestCode && resultCode == AddActivity.DELETE_RESULT_CODE) {
+            ideaViewModel.delete(data?.getLongExtra(AddActivity.INTENT_ARG_ID, -1)!!)
+                    ?.observe(this, fetchIdeasObserver)
+        }
     }
 
 

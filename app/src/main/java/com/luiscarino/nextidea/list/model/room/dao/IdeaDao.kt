@@ -25,5 +25,9 @@ interface IdeaDao {
     @Query("SELECT * FROM idea_table WHERE id = :id")
     fun get(id:Long) : LiveData<Idea>
 
+    @Query("SELECT * FROM idea_table WHERE id = :id")
+    fun getById(id:Long) : Idea
+
+
 
 }

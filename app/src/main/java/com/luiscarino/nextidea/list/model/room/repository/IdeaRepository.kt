@@ -38,4 +38,6 @@ class IdeaRepository(application: Application) {
     fun update(idea: Idea) = ideaDao?.update(idea)
 
     fun delete(idea:Idea) = ideaDao?.delete(idea)
+
+    fun getIdeaById(id:Long) = ideaDao?.getById(id)
 }
