@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.NavUtils
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -19,7 +18,7 @@ import com.luiscarino.nextidea.list.viewmodel.IdeaViewModel
 import com.luiscarino.nextidea.util.toButtonColor
 import com.luiscarino.nextidea.util.toDrawableId
 import kotlinx.android.synthetic.main.activity_add.*
-import org.koin.android.ext.android.inject
+import org.koin.android.architecture.ext.viewModel
 import java.util.*
 
 /**
@@ -29,7 +28,8 @@ class AddActivity : AppCompatActivity() {
 
     companion object {
         const val NO_ID_PROVIDED = -1L
-        private const val INTENT_ARG_ID = "ARG_IDEA_ID"
+        const val INTENT_ARG_ID = "ARG_IDEA_ID"
+        const val DELETE_RESULT_CODE = 100
 
         fun getIntentInEditMode(ideaId: Long?, packageContext: Context): Intent {
             val intent = Intent(packageContext, AddActivity::class.java)
@@ -42,7 +42,7 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    private val ideaViewModel: IdeaViewModel by inject()
+    private val ideaViewModel by viewModel<IdeaViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +60,7 @@ class AddActivity : AppCompatActivity() {
         } else {
             ideaViewModel.getIdeaById(intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED))
                     ?.observe(this, Observer {
+                        ideaViewModel.detailIdea = it
                         ideaViewModel.selectedStatus = it?.status
                         ideaViewModel.selectedCategory = it?.category
                         updateCategoryView(ideaViewModel.selectedCategory)
@@ -223,8 +224,9 @@ class AddActivity : AppCompatActivity() {
     private fun deleteIdea() {
         if (!ideaViewModel.isEditMode) return
 
-//        ideaViewModel.delete(intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED))
-        Snackbar.make(constraintLayout, "Idea deleted", Snackbar.LENGTH_LONG)
+        setResult(DELETE_RESULT_CODE, Intent().apply { putExtra(INTENT_ARG_ID, ideaViewModel.detailIdea?.id) })
+        finish()
+
     }
 
 }
