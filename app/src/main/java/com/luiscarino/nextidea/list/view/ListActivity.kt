@@ -25,7 +25,8 @@ import org.koin.android.architecture.ext.viewModel
 class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
 
     private val ideaViewModel: IdeaViewModel by viewModel()
-    lateinit var ideasAdapter: IdeaListRecyclerViewAdapter
+    private val startEditActivityCode = 1000
+    private lateinit var ideasAdapter: IdeaListRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,37 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
 
         ideaViewModel.getAllIdeas()?.observe(this, fetchIdeasObserver)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_list, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCardClicked(id: Long?) {
+        startActivityForResult(
+                AddActivity.getIntentInEditMode(id, this),
+                startEditActivityCode)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (startEditActivityCode == requestCode && resultCode == AddActivity.DELETE_RESULT_CODE) {
+            ideaViewModel.delete(data?.getLongExtra(AddActivity.INTENT_ARG_ID, -1)!!)
+                    ?.observe(this, fetchIdeasObserver)
+        }
     }
 
     private val fetchIdeasObserver = Observer<List<Idea>> { ideaList ->
@@ -65,38 +97,5 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
             emptyListContainer.visibility = View.VISIBLE
         }
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_list, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private val startEditActivityCode = 1000
-    override fun onCardClicked(id: Long?) {
-        startActivityForResult(
-                AddActivity.getIntentInEditMode(id, this),
-                startEditActivityCode)
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (startEditActivityCode == requestCode && resultCode == AddActivity.DELETE_RESULT_CODE) {
-            ideaViewModel.delete(data?.getLongExtra(AddActivity.INTENT_ARG_ID, -1)!!)
-                    ?.observe(this, fetchIdeasObserver)
-        }
-    }
-
 
 }
