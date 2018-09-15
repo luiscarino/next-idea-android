@@ -1,4 +1,4 @@
-package com.luiscarino.nextidea.list.viewmodel
+package com.luiscarino.nextidea.viewmodel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel

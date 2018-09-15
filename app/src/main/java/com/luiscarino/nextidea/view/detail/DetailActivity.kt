@@ -1,14 +1,12 @@
-package com.luiscarino.nextidea.detail
+package com.luiscarino.nextidea.view.detail
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.luiscarino.nextidea.R
-import com.luiscarino.nextidea.list.viewmodel.IdeaViewModel
+import com.luiscarino.nextidea.viewmodel.IdeaViewModel
 import org.koin.android.architecture.ext.viewModel
-import org.koin.android.ext.android.inject
 
 class DetailActivity : AppCompatActivity() {
 

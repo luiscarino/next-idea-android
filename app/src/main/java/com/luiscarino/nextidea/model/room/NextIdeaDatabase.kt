@@ -6,6 +6,7 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
+import com.luiscarino.nextidea.R
 import com.luiscarino.nextidea.model.room.coverter.DateConverter
 import com.luiscarino.nextidea.model.room.dao.CategoryDao
 import com.luiscarino.nextidea.model.room.dao.IdeaDao
@@ -16,7 +17,7 @@ import com.luiscarino.nextidea.model.room.entity.Status
 import com.luiscarino.nextidea.util.PopulateDbAsync
 
 
-@Database(entities = [Idea::class, Category::class, Status::class], version = 1, exportSchema = false)
+@Database(entities = [Idea::class, Category::class, Status::class], version = 1)
 @TypeConverters(DateConverter::class)
 abstract class NextIdeaDatabase : RoomDatabase() {
 
@@ -31,7 +32,7 @@ abstract class NextIdeaDatabase : RoomDatabase() {
             if (INSTANCE == null) {
                 synchronized(NextIdeaDatabase::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
-                            NextIdeaDatabase::class.java, "nextidea.db")
+                            NextIdeaDatabase::class.java, context.getString(R.string.database_name))
                             .addCallback(roomDatabaseCallback)
                             .build()
                 }
@@ -45,8 +46,8 @@ abstract class NextIdeaDatabase : RoomDatabase() {
 
         private val roomDatabaseCallback = object : RoomDatabase.Callback() {
 
-            override fun onOpen(db: SupportSQLiteDatabase) {
-                super.onOpen(db)
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
                 PopulateDbAsync(INSTANCE).execute()
             }
         }

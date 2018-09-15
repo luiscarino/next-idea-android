@@ -1,4 +1,4 @@
-package com.luiscarino.nextidea.list.view.adapter
+package com.luiscarino.nextidea.view.list.view.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import com.luiscarino.nextidea.util.recyclerview.DelegateAdapter
 import com.luiscarino.nextidea.util.toButtonColor
 import com.luiscarino.nextidea.util.toDrawableId
 
-class IdeaListItemDelegateAdapter(val actions:  Actions) : DelegateAdapter
+class IdeaListItemDelegateAdapter(val actions: Actions) : DelegateAdapter
 <IdeaListItemDelegateAdapter.IdeaItemViewHolder, IdeaListItemRecyclerRecyclerViewType> {
 
     companion object {
@@ -53,7 +53,7 @@ class IdeaListItemDelegateAdapter(val actions:  Actions) : DelegateAdapter
     }
 
     interface Actions {
-        fun onCardClicked(id:Long?)
+        fun onCardClicked(id: Long?)
     }
 
 }

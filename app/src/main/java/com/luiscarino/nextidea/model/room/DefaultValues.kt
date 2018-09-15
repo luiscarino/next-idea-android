@@ -15,7 +15,7 @@ class DefaultValues {
         const val CATEGORY_FOOD = "Food"
         const val CATEGORY_GAMING = "Gaming"
         const val CATEGORY_MUSIC = "Music"
-        const val CATEGORY_POTHOGRAPHY = "Photography"
+        const val CATEGORY_PHOTOGRAPHY = "Photography"
         const val CATEGORY_PRODUCT = "Product"
         const val CATEGORY_TECH = "Technology"
         const val CATEGORY_WRITING = "Writing"

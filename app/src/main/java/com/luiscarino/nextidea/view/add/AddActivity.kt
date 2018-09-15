@@ -1,4 +1,4 @@
-package com.luiscarino.nextidea.add
+package com.luiscarino.nextidea.view.add
 
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
@@ -14,9 +14,9 @@ import com.luiscarino.nextidea.R
 import com.luiscarino.nextidea.model.room.entity.Category
 import com.luiscarino.nextidea.model.room.entity.Idea
 import com.luiscarino.nextidea.model.room.entity.Status
-import com.luiscarino.nextidea.list.viewmodel.IdeaViewModel
 import com.luiscarino.nextidea.util.toButtonColor
 import com.luiscarino.nextidea.util.toDrawableId
+import com.luiscarino.nextidea.viewmodel.IdeaViewModel
 import kotlinx.android.synthetic.main.activity_add.*
 import org.koin.android.architecture.ext.viewModel
 import java.util.*

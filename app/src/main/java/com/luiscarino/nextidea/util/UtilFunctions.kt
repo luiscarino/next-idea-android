@@ -24,7 +24,7 @@ fun toDrawableId(categoryName: String?): Int {
         DefaultValues.CATEGORY_FOOD -> R.drawable.ic_twotone_food
         DefaultValues.CATEGORY_GAMING -> R.drawable.ic_twotone_games
         DefaultValues.CATEGORY_MUSIC -> R.drawable.ic_twotone_music
-        DefaultValues.CATEGORY_POTHOGRAPHY -> R.drawable.ic_twotone_photography
+        DefaultValues.CATEGORY_PHOTOGRAPHY -> R.drawable.ic_twotone_photography
         DefaultValues.CATEGORY_PRODUCT -> R.drawable.ic_twotone_product
         DefaultValues.CATEGORY_TECH -> R.drawable.ic_twotone_tech
         DefaultValues.CATEGORY_WRITING -> R.drawable.ic_twotone_writing
@@ -45,7 +45,7 @@ fun toDrawableId(categoryName: String?): Int {
         categoryDao?.insert(Category(DefaultValues.CATEGORY_FOOD, "ic_twotone_food"))
         categoryDao?.insert(Category(DefaultValues.CATEGORY_GAMING, "ic_twotone_games"))
         categoryDao?.insert(Category(DefaultValues.CATEGORY_MUSIC, "ic_twotone_music"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_POTHOGRAPHY, "ic_twotone_photography"))
+        categoryDao?.insert(Category(DefaultValues.CATEGORY_PHOTOGRAPHY, "ic_twotone_photography"))
         categoryDao?.insert(Category(DefaultValues.CATEGORY_PRODUCT, "ic_twotone_product"))
         categoryDao?.insert(Category(DefaultValues.CATEGORY_TECH, "ic_twotone_tech"))
         categoryDao?.insert(Category(DefaultValues.CATEGORY_WRITING, "ic_twotone_writing"))

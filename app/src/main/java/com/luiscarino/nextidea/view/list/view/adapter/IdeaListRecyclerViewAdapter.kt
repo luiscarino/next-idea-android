@@ -1,4 +1,4 @@
-package com.luiscarino.nextidea.list.view.adapter
+package com.luiscarino.nextidea.view.list.view.adapter
 
 import com.luiscarino.nextidea.util.recyclerview.BaseRecyclerViewAdapter
 import com.luiscarino.nextidea.util.recyclerview.RecyclerViewType

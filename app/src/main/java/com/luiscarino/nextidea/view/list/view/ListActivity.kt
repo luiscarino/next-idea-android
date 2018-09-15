@@ -1,4 +1,4 @@
-package com.luiscarino.nextidea.list.view
+package com.luiscarino.nextidea.view.list.view
 
 import android.arch.lifecycle.Observer
 import android.content.Intent
@@ -9,13 +9,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.luiscarino.nextidea.R
-import com.luiscarino.nextidea.add.AddActivity
 import com.luiscarino.nextidea.model.room.entity.Idea
-import com.luiscarino.nextidea.list.view.adapter.IdeaListItemDelegateAdapter
-import com.luiscarino.nextidea.list.view.adapter.IdeaListItemRecyclerRecyclerViewType
-import com.luiscarino.nextidea.list.view.adapter.IdeaListRecyclerViewAdapter
-import com.luiscarino.nextidea.list.viewmodel.IdeaViewModel
 import com.luiscarino.nextidea.util.formatToMonthDayYear
+import com.luiscarino.nextidea.view.add.AddActivity
+import com.luiscarino.nextidea.view.list.view.adapter.IdeaListItemDelegateAdapter
+import com.luiscarino.nextidea.view.list.view.adapter.IdeaListItemRecyclerRecyclerViewType
+import com.luiscarino.nextidea.view.list.view.adapter.IdeaListRecyclerViewAdapter
+import com.luiscarino.nextidea.viewmodel.IdeaViewModel
 import kotlinx.android.synthetic.main.activity_list.*
 import org.koin.android.architecture.ext.viewModel
 
