@@ -3,13 +3,13 @@ package com.luiscarino.nextidea
 import android.arch.persistence.room.Room
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
-import com.luiscarino.nextidea.list.model.room.*
-import com.luiscarino.nextidea.list.model.room.dao.CategoryDao
-import com.luiscarino.nextidea.list.model.room.dao.IdeaDao
-import com.luiscarino.nextidea.list.model.room.dao.StatusDao
-import com.luiscarino.nextidea.list.model.room.entity.Category
-import com.luiscarino.nextidea.list.model.room.entity.Idea
-import com.luiscarino.nextidea.list.model.room.entity.Status
+import com.luiscarino.nextidea.model.room.NextIdeaDatabase
+import com.luiscarino.nextidea.model.room.dao.CategoryDao
+import com.luiscarino.nextidea.model.room.dao.IdeaDao
+import com.luiscarino.nextidea.model.room.dao.StatusDao
+import com.luiscarino.nextidea.model.room.entity.Category
+import com.luiscarino.nextidea.model.room.entity.Idea
+import com.luiscarino.nextidea.model.room.entity.Status
 import org.junit.After
 
 import org.junit.Test

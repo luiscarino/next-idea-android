@@ -14,9 +14,9 @@
     <!--<color name="colorAccent">#F57F17</color>-->
 
     <!--Status button color-->
-    <color name="bg_status_not_started">#B0BEC5</color>
-    <color name="bg_status_in_progress">#FFE082</color>
-    <color name="bg_status_done">#A5D6A7</color>
-    <color name="bg_status_blocked">#EF9A9A</color>
+    <color name="bg_status_not_started">#9E9E9E</color>
+    <color name="bg_status_in_progress">#FFC107</color>
+    <color name="bg_status_done">#4CAF50</color>
+    <color name="bg_status_blocked">#F44336</color>
 
 </resources>

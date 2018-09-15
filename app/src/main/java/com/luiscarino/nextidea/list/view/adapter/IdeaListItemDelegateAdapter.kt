@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.luiscarino.nextidea.R
-import com.luiscarino.nextidea.list.model.room.DefaultValues
 import com.luiscarino.nextidea.util.ConstantsDelegateAdapter
 import com.luiscarino.nextidea.util.recyclerview.DelegateAdapter
 import com.luiscarino.nextidea.util.toButtonColor

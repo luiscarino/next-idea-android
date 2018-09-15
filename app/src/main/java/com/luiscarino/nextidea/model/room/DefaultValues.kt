@@ -1,4 +1,4 @@
-package com.luiscarino.nextidea.list.model.room
+package com.luiscarino.nextidea.model.room
 
 class DefaultValues {
 

@@ -1,4 +1,4 @@
-package com.luiscarino.nextidea.list.model.room
+package com.luiscarino.nextidea.model.room
 
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Database
@@ -6,13 +6,13 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
-import com.luiscarino.nextidea.list.model.room.coverter.DateConverter
-import com.luiscarino.nextidea.list.model.room.dao.CategoryDao
-import com.luiscarino.nextidea.list.model.room.dao.IdeaDao
-import com.luiscarino.nextidea.list.model.room.dao.StatusDao
-import com.luiscarino.nextidea.list.model.room.entity.Category
-import com.luiscarino.nextidea.list.model.room.entity.Idea
-import com.luiscarino.nextidea.list.model.room.entity.Status
+import com.luiscarino.nextidea.model.room.coverter.DateConverter
+import com.luiscarino.nextidea.model.room.dao.CategoryDao
+import com.luiscarino.nextidea.model.room.dao.IdeaDao
+import com.luiscarino.nextidea.model.room.dao.StatusDao
+import com.luiscarino.nextidea.model.room.entity.Category
+import com.luiscarino.nextidea.model.room.entity.Idea
+import com.luiscarino.nextidea.model.room.entity.Status
 import com.luiscarino.nextidea.util.PopulateDbAsync
 
 

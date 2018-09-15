@@ -1,8 +1,8 @@
-package com.luiscarino.nextidea.list.model.room.dao
+package com.luiscarino.nextidea.model.room.dao
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
-import com.luiscarino.nextidea.list.model.room.entity.Category
+import com.luiscarino.nextidea.model.room.entity.Category
 
 @Dao
 interface CategoryDao {

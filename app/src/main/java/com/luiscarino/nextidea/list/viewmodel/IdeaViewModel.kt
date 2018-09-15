@@ -3,10 +3,10 @@ package com.luiscarino.nextidea.list.viewmodel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import com.luiscarino.nextidea.list.model.room.entity.Category
-import com.luiscarino.nextidea.list.model.room.entity.Idea
-import com.luiscarino.nextidea.list.model.room.entity.Status
-import com.luiscarino.nextidea.list.model.room.repository.IdeaRepository
+import com.luiscarino.nextidea.model.room.entity.Category
+import com.luiscarino.nextidea.model.room.entity.Idea
+import com.luiscarino.nextidea.model.room.entity.Status
+import com.luiscarino.nextidea.model.room.repository.IdeaRepository
 import kotlinx.coroutines.experimental.launch
 
 class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: Application)

@@ -10,7 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import com.luiscarino.nextidea.R
 import com.luiscarino.nextidea.add.AddActivity
-import com.luiscarino.nextidea.list.model.room.entity.Idea
+import com.luiscarino.nextidea.model.room.entity.Idea
 import com.luiscarino.nextidea.list.view.adapter.IdeaListItemDelegateAdapter
 import com.luiscarino.nextidea.list.view.adapter.IdeaListItemRecyclerRecyclerViewType
 import com.luiscarino.nextidea.list.view.adapter.IdeaListRecyclerViewAdapter

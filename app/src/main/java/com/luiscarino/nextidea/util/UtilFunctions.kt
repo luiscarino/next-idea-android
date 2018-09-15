@@ -2,10 +2,10 @@ package com.luiscarino.nextidea.util
 
 import android.os.AsyncTask
 import com.luiscarino.nextidea.R
-import com.luiscarino.nextidea.list.model.room.DefaultValues
-import com.luiscarino.nextidea.list.model.room.NextIdeaDatabase
-import com.luiscarino.nextidea.list.model.room.entity.Category
-import com.luiscarino.nextidea.list.model.room.entity.Status
+import com.luiscarino.nextidea.model.room.DefaultValues
+import com.luiscarino.nextidea.model.room.NextIdeaDatabase
+import com.luiscarino.nextidea.model.room.entity.Category
+import com.luiscarino.nextidea.model.room.entity.Status
 
 fun toButtonColor(statusName: String?): Int {
     return when (statusName) {
@@ -41,7 +41,7 @@ fun toDrawableId(categoryName: String?): Int {
         categoryDao?.deleteAll()
         categoryDao?.insert(Category(DefaultValues.CATEGORY_OTHER, "ic_twotone_other"))
         categoryDao?.insert(Category(DefaultValues.CATEGORY_ART, "ic_twotone_art"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_BUSINESS,"ic_twotone_business"))
+        categoryDao?.insert(Category(DefaultValues.CATEGORY_BUSINESS, "ic_twotone_business"))
         categoryDao?.insert(Category(DefaultValues.CATEGORY_FOOD, "ic_twotone_food"))
         categoryDao?.insert(Category(DefaultValues.CATEGORY_GAMING, "ic_twotone_games"))
         categoryDao?.insert(Category(DefaultValues.CATEGORY_MUSIC, "ic_twotone_music"))

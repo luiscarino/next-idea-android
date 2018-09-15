@@ -1,4 +1,4 @@
-package com.luiscarino.nextidea.list.model.room.entity
+package com.luiscarino.nextidea.model.room.entity
 
 import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Entity

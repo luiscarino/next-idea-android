@@ -1,4 +1,4 @@
-package com.luiscarino.nextidea.list.model.room.repository
+package com.luiscarino.nextidea.model.room.repository
 
 interface IdeaRepositoryI {
 

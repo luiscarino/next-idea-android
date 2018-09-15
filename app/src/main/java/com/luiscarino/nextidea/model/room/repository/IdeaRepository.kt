@@ -1,11 +1,11 @@
-package com.luiscarino.nextidea.list.model.room.repository
+package com.luiscarino.nextidea.model.room.repository
 
 import android.app.Application
-import com.luiscarino.nextidea.list.model.room.NextIdeaDatabase
-import com.luiscarino.nextidea.list.model.room.dao.CategoryDao
-import com.luiscarino.nextidea.list.model.room.dao.IdeaDao
-import com.luiscarino.nextidea.list.model.room.dao.StatusDao
-import com.luiscarino.nextidea.list.model.room.entity.Idea
+import com.luiscarino.nextidea.model.room.NextIdeaDatabase
+import com.luiscarino.nextidea.model.room.dao.CategoryDao
+import com.luiscarino.nextidea.model.room.dao.IdeaDao
+import com.luiscarino.nextidea.model.room.dao.StatusDao
+import com.luiscarino.nextidea.model.room.entity.Idea
 
 /**
  * Abstracts access to data source.
@@ -25,7 +25,7 @@ class IdeaRepository(application: Application) {
 
     fun getAllIdeas() = ideaDao?.geAllIdeas()
 
-    fun insert(idea:Idea) {
+    fun insert(idea: Idea) {
         ideaDao?.insert(idea)
     }
 
@@ -37,7 +37,7 @@ class IdeaRepository(application: Application) {
 
     fun update(idea: Idea) = ideaDao?.update(idea)
 
-    fun delete(idea:Idea) = ideaDao?.delete(idea)
+    fun delete(idea: Idea) = ideaDao?.delete(idea)
 
     fun getIdeaById(id:Long) = ideaDao?.getById(id)
 }

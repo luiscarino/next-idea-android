@@ -11,9 +11,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import com.luiscarino.nextidea.R
-import com.luiscarino.nextidea.list.model.room.entity.Category
-import com.luiscarino.nextidea.list.model.room.entity.Idea
-import com.luiscarino.nextidea.list.model.room.entity.Status
+import com.luiscarino.nextidea.model.room.entity.Category
+import com.luiscarino.nextidea.model.room.entity.Idea
+import com.luiscarino.nextidea.model.room.entity.Status
 import com.luiscarino.nextidea.list.viewmodel.IdeaViewModel
 import com.luiscarino.nextidea.util.toButtonColor
 import com.luiscarino.nextidea.util.toDrawableId
