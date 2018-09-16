@@ -15,7 +15,6 @@ class RateMyApp(private val activity: AppCompatActivity,
 
     private val sharedPreferences: SharedPreferences = activity.getSharedPreferences(PreferencesContract.SHARED_PREFERENCES_NAME, 0)
 
-
     companion object {
         private const val TAG = "RateMyApp"
     }
@@ -33,7 +32,7 @@ class RateMyApp(private val activity: AppCompatActivity,
         }
 
         if (!configuration.showIfHasCrashed) {
-            // TODO
+            initExceptionHandler()
         }
 
         val editor = sharedPreferences.edit()
@@ -66,6 +65,16 @@ class RateMyApp(private val activity: AppCompatActivity,
         editor.apply()
     }
 
+    private fun initExceptionHandler() {
+        Log.d(TAG, "Init AppRate ExceptionHandler")
+        val currentHandler = Thread.getDefaultUncaughtExceptionHandler()
+        // Don't register again if already registered.
+        if (currentHandler !is ExceptionHandler) {
+            // Register default exceptions handler.
+            Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(currentHandler, activity))
+        }
+    }
+
     private fun displayCustomDialog() {
         // TODO: add click listeners
         configuration.customDialogBuilder?.show()
@@ -86,9 +95,12 @@ class RateMyApp(private val activity: AppCompatActivity,
         val builder = AlertDialog.Builder(activity)
         builder.setTitle(title)
         builder.setMessage(message)
-        builder.setPositiveButton(rate) { _, _ ->
+        builder.setPositiveButton(rate) { _, _ -> run { launchPlayStore() } }
+        builder.setNeutralButton(remindLater) { dialog, _ -> dialog.dismiss() }
+        builder.setNegativeButton(dismiss) { dialog, _ ->
             run {
-                launchPlayStore()
+                sharedPreferences.edit().putBoolean(PreferencesContract.PREF_DONT_SHOW_AGAIN, true).apply()
+                dialog.dismiss()
             }
         }
         builder.show()
