@@ -26,8 +26,7 @@ class RateMyApp(private val activity: AppCompatActivity,
 
         // check if not required
         if (sharedPreferences.getBoolean(PreferencesContract.PREF_DONT_SHOW_AGAIN, false)
-                || sharedPreferences.getBoolean(PreferencesContract.PREF_APP_HAS_CRASHED, false)
-                || !configuration.showIfHasCrashed) {
+                || sharedPreferences.getBoolean(PreferencesContract.PREF_APP_HAS_CRASHED, false) && !configuration.showIfHasCrashed) {
             return
         }
 
@@ -103,9 +102,9 @@ class RateMyApp(private val activity: AppCompatActivity,
         }
         builder.setNeutralButton(remindLater) { dialog, _ ->
             run {
-                val launchCount = sharedPreferences.getLong(PreferencesContract.PREF_LAUNCH_COUNT, 0)
-                // increment one day until ask again
-                sharedPreferences.edit().putLong(PreferencesContract.PREF_LAUNCH_COUNT, launchCount.plus(1)).apply()
+                // reset launch date to today
+                sharedPreferences.edit().putLong(PreferencesContract.PREF_DATE_FIRST_LAUNCH, System.currentTimeMillis()).apply()
+                sharedPreferences.edit().putLong(PreferencesContract.PREF_LAUNCH_COUNT, 1).apply()
                 dialog.dismiss()
             }
         }
