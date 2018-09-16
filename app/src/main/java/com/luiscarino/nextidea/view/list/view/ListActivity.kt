@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import com.luiscarino.nextidea.R
 import com.luiscarino.nextidea.model.room.entity.Idea
+import com.luiscarino.nextidea.ratemyapp.RateMyApp
 import com.luiscarino.nextidea.util.formatToMonthDayYear
 import com.luiscarino.nextidea.view.add.AddActivity
 import com.luiscarino.nextidea.view.list.view.adapter.IdeaListItemDelegateAdapter
@@ -43,7 +44,7 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
 
 
         ideaViewModel.getAllIdeas()?.observe(this, fetchIdeasObserver)
-
+        RateMyApp(this, RateMyApp.RateMyAppConfig(3)).init()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -19,7 +19,6 @@ class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: App
     var selectedCategory: Category? = null
     var selectedStatus: Status? = null
     var detailIdea: Idea? = null
-
     var isEditMode: Boolean = false
 
     fun insert(idea: Idea) {
@@ -29,7 +28,9 @@ class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: App
     }
 
     fun update(idea: Idea) {
-        launch { ideaRepository.update(idea) }
+        launch {
+            ideaRepository.update(idea)
+        }
     }
 
     fun getAllIdeas(): LiveData<List<Idea>>? {
