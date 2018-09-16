@@ -18,7 +18,7 @@ import com.luiscarino.nextidea.view.list.view.adapter.IdeaListItemRecyclerRecycl
 import com.luiscarino.nextidea.view.list.view.adapter.IdeaListRecyclerViewAdapter
 import com.luiscarino.nextidea.viewmodel.IdeaViewModel
 import kotlinx.android.synthetic.main.activity_list.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * Activity that displays a list of Ideas.

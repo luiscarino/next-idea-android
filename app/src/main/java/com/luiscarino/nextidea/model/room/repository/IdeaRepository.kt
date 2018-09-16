@@ -1,7 +1,5 @@
 package com.luiscarino.nextidea.model.room.repository
 
-import android.app.Application
-import com.luiscarino.nextidea.model.room.NextIdeaDatabase
 import com.luiscarino.nextidea.model.room.dao.CategoryDao
 import com.luiscarino.nextidea.model.room.dao.IdeaDao
 import com.luiscarino.nextidea.model.room.dao.StatusDao
@@ -10,34 +8,23 @@ import com.luiscarino.nextidea.model.room.entity.Idea
 /**
  * Abstracts access to data source.
  */
-class IdeaRepository(application: Application) {
+class IdeaRepository(private val ideaDao: IdeaDao,
+                     private val categoryDao: CategoryDao,
+                     private val statusDao: StatusDao) {
 
-    private var ideaDao: IdeaDao?
-    private var categoryDao : CategoryDao?
-    private var statusDao : StatusDao?
+    fun getAllIdeas() = ideaDao.geAllIdeas()
 
-    init {
-        val db = NextIdeaDatabase.getInstance(application.applicationContext)
-        ideaDao = db?.ideaDao()
-        categoryDao = db?.categoryDao()
-        statusDao = db?.statusDao()
-    }
+    fun insert(idea: Idea) = ideaDao.insert(idea)
 
-    fun getAllIdeas() = ideaDao?.geAllIdeas()
+    fun getAllCategories() = categoryDao.geAllCategories()
 
-    fun insert(idea: Idea) {
-        ideaDao?.insert(idea)
-    }
+    fun getAllStatus() = statusDao.getAll()
 
-    fun getAllCategories() = categoryDao?.geAllCategories()
+    fun get(id: Long) = ideaDao.get(id)
 
-    fun getAllStatus() = statusDao?.getAll()
+    fun update(idea: Idea) = ideaDao.update(idea)
 
-    fun get(id:Long) = ideaDao?.get(id)
+    fun delete(idea: Idea) = ideaDao.delete(idea)
 
-    fun update(idea: Idea) = ideaDao?.update(idea)
-
-    fun delete(idea: Idea) = ideaDao?.delete(idea)
-
-    fun getIdeaById(id:Long) = ideaDao?.getById(id)
+    fun getIdeaById(id: Long) = ideaDao.getById(id)
 }
