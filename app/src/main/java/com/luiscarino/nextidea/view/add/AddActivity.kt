@@ -18,7 +18,7 @@ import com.luiscarino.nextidea.util.toButtonColor
 import com.luiscarino.nextidea.util.toDrawableId
 import com.luiscarino.nextidea.viewmodel.IdeaViewModel
 import kotlinx.android.synthetic.main.activity_add.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
 /**

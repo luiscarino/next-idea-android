@@ -2,7 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.2.61'
-    ext.koin_version = '0.9.3'
+    ext.koin_version = '1.0.0'
     ext.google_services_version = '4.0.1'
     ext.frabric_gradle_version = '1.25.4'
     repositories {

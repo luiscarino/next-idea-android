@@ -1,11 +1,7 @@
 package com.luiscarino.nextidea.util
 
-import android.os.AsyncTask
 import com.luiscarino.nextidea.R
 import com.luiscarino.nextidea.model.room.DefaultValues
-import com.luiscarino.nextidea.model.room.NextIdeaDatabase
-import com.luiscarino.nextidea.model.room.entity.Category
-import com.luiscarino.nextidea.model.room.entity.Status
 
 fun toButtonColor(statusName: String?): Int {
     return when (statusName) {
@@ -31,34 +27,4 @@ fun toDrawableId(categoryName: String?): Int {
         DefaultValues.CATEGORY_ART -> R.drawable.ic_twotone_art
         else -> R.drawable.ic_twotone_other
     }
-}
-
-
- class PopulateDbAsync(private val db: NextIdeaDatabase?) : AsyncTask<Void, Void, Void>() {
-
-    override fun doInBackground(vararg params: Void?): Void? {
-        val categoryDao = db?.categoryDao()
-        categoryDao?.deleteAll()
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_OTHER, "ic_twotone_other"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_ART, "ic_twotone_art"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_BUSINESS, "ic_twotone_business"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_FOOD, "ic_twotone_food"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_GAMING, "ic_twotone_games"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_MUSIC, "ic_twotone_music"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_PHOTOGRAPHY, "ic_twotone_photography"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_PRODUCT, "ic_twotone_product"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_TECH, "ic_twotone_tech"))
-        categoryDao?.insert(Category(DefaultValues.CATEGORY_WRITING, "ic_twotone_writing"))
-
-
-        val statusDao = db?.statusDao()
-        statusDao?.deleteAll()
-        statusDao?.insert(Status(DefaultValues.STATUS_NOT_STARTED))
-        statusDao?.insert(Status(DefaultValues.STATUS_IN_PROGRESS))
-        statusDao?.insert(Status(DefaultValues.STATUS_DONE))
-        statusDao?.insert(Status(DefaultValues.STATUS_BLOCKED))
-
-        return null
-    }
-
 }
