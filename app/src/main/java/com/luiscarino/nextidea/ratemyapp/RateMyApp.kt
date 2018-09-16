@@ -95,8 +95,20 @@ class RateMyApp(private val activity: AppCompatActivity,
         val builder = AlertDialog.Builder(activity)
         builder.setTitle(title)
         builder.setMessage(message)
-        builder.setPositiveButton(rate) { _, _ -> run { launchPlayStore() } }
-        builder.setNeutralButton(remindLater) { dialog, _ -> dialog.dismiss() }
+        builder.setPositiveButton(rate) { _, _ ->
+            run {
+                sharedPreferences.edit().putBoolean(PreferencesContract.PREF_DONT_SHOW_AGAIN, true).apply()
+                launchPlayStore()
+            }
+        }
+        builder.setNeutralButton(remindLater) { dialog, _ ->
+            run {
+                val launchCount = sharedPreferences.getLong(PreferencesContract.PREF_LAUNCH_COUNT, 0)
+                // increment one day until ask again
+                sharedPreferences.edit().putLong(PreferencesContract.PREF_LAUNCH_COUNT, launchCount.plus(1)).apply()
+                dialog.dismiss()
+            }
+        }
         builder.setNegativeButton(dismiss) { dialog, _ ->
             run {
                 sharedPreferences.edit().putBoolean(PreferencesContract.PREF_DONT_SHOW_AGAIN, true).apply()
