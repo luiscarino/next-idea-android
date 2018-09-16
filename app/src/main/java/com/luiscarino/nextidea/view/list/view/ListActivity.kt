@@ -44,7 +44,7 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
 
 
         ideaViewModel.getAllIdeas()?.observe(this, fetchIdeasObserver)
-        RateMyApp(this, RateMyApp.RateMyAppConfig(3)).init()
+        RateMyApp(this, RateMyApp.RateMyAppConfig(5)).init()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
