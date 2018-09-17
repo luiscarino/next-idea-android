@@ -26,6 +26,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.preferences.MyPreferencesActivity"
+            android:parentActivityName="com.luiscarino.nextidea.view.list.view.ListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
