@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/preferences">
+    <Preference android:title="Rate us!">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://play.google.com/store/apps/details?id=com.luiscarino.nextidea" />
+    </Preference>
+    <Preference android:title="Privacy Policy">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="http://www.luiscarino.io/p/blog-page.html" />
+    </Preference>
+    <Preference android:title="Terms And Conditions">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="http://www.luiscarino.io/p/next-idea-terms-and-conditions.html" />
+    </Preference>
+    <com.luiscarino.nextidea.view.preferences.MyDialogPreference
+        android:key="about"
+        android:title="About"
+        android:dialogMessage="Next Idea v1.0.0"
+        android:negativeButtonText="" />
+
+
+</PreferenceScreen>
