@@ -19,5 +19,9 @@
     <string name="share_your_idea">Share your idea</string>
     <string name="no_ideas_thats_ok">No ideas? That\'s OK!</string>
     <string name="tap_the_icon_to_add_an_idea_and_it_will_show_up_here">Tap the + icon to add an idea and \nit will show up here</string>
+    <string name="preferences">Preferences</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

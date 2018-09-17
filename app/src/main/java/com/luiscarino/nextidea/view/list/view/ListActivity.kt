@@ -16,6 +16,7 @@ import com.luiscarino.nextidea.view.add.AddActivity
 import com.luiscarino.nextidea.view.list.view.adapter.IdeaListItemDelegateAdapter
 import com.luiscarino.nextidea.view.list.view.adapter.IdeaListItemRecyclerRecyclerViewType
 import com.luiscarino.nextidea.view.list.view.adapter.IdeaListRecyclerViewAdapter
+import com.luiscarino.nextidea.view.preferences.MyPreferencesActivity
 import com.luiscarino.nextidea.viewmodel.IdeaViewModel
 import kotlinx.android.synthetic.main.activity_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -52,17 +53,16 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_list, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                startActivity(Intent(this, MyPreferencesActivity::class.java))
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
