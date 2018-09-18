@@ -9,7 +9,7 @@ import android.support.v4.app.NavUtils
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import com.luiscarino.nextidea.R
 import com.luiscarino.nextidea.model.room.entity.Category
 import com.luiscarino.nextidea.model.room.entity.Idea
@@ -56,7 +56,12 @@ class AddActivity : AppCompatActivity() {
         ideaViewModel.isEditMode = extraIdeaId != NO_ID_PROVIDED
         // show keyboard on add mode
         if (!ideaViewModel.isEditMode) {
-            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+            titleTextView.postDelayed(
+                    {
+                        val systemService = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        systemService.showSoftInput(titleTextView, InputMethodManager.SHOW_IMPLICIT)
+                    },
+                    500)
         } else {
             ideaViewModel.getIdeaById(intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED))
                     ?.observe(this, Observer {
@@ -158,6 +163,7 @@ class AddActivity : AppCompatActivity() {
             android.R.id.home -> {
                 // Respond to the action bar's Up/Home button
                 NavUtils.navigateUpFromSameTask(this)
+                finishWithAnimation()
                 return true
             }
             R.id.action_save -> {
@@ -174,6 +180,11 @@ class AddActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(0, R.anim.activity_slide_down)
     }
 
     private fun updateStatusView(status: Status?) {
@@ -218,15 +229,20 @@ class AddActivity : AppCompatActivity() {
                     ideaViewModel.selectedCategory!!
             ))
         }
-        finish()
+        finishWithAnimation()
     }
 
     private fun deleteIdea() {
         if (!ideaViewModel.isEditMode) return
 
         setResult(DELETE_RESULT_CODE, Intent().apply { putExtra(INTENT_ARG_ID, ideaViewModel.detailIdea?.id) })
-        finish()
+        finishWithAnimation()
 
+    }
+
+    private fun finishWithAnimation() {
+        finish()
+        overridePendingTransition(0, R.anim.activity_slide_down)
     }
 
 }

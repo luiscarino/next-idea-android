@@ -30,6 +30,11 @@ class ListActivity : AppCompatActivity(), IdeaListItemDelegateAdapter.Actions {
     private val startEditActivityCode = 1000
     private lateinit var ideasAdapter: IdeaListRecyclerViewAdapter
 
+    override fun onStart() {
+        super.onStart()
+        overridePendingTransition(R.anim.activity_hold, R.anim.activity_hold)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)

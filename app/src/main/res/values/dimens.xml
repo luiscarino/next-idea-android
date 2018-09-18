@@ -1,4 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_item_icon_size">60dp</dimen>
+
+    <integer name="animation_duration_medium">500</integer>
 </resources>
