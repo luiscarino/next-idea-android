@@ -190,12 +190,17 @@ class AddActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_delete -> {
-                deleteIdea()
+                val builder = AlertDialog.Builder(this, R.style.ConfirmationDialog)
+                builder.setMessage(getString(R.string.alert_delete_title))
+                        .setPositiveButton(getString(R.string.alert_delete_title_button_yes)) { _, _ -> deleteIdea() }
+                        .setNegativeButton(getString(R.string.alert_delete_title_button_no)) { d, _ -> d.dismiss() }
+                        .show()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
 
     override fun onBackPressed() {
         super.onBackPressed()
