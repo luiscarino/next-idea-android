@@ -50,13 +50,13 @@ class AddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
+        val extraIdeaId = intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED)
+        ideaViewModel.isEditMode = extraIdeaId != NO_ID_PROVIDED
 
         setupToolbar()
         getCategoriesAndSetupView()
         getStatusAndSetupView()
 
-        val extraIdeaId = intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED)
-        ideaViewModel.isEditMode = extraIdeaId != NO_ID_PROVIDED
         // show keyboard on add mode
         if (!ideaViewModel.isEditMode) {
             titleTextView.postDelayed(
@@ -88,7 +88,13 @@ class AddActivity : AppCompatActivity() {
     private fun setupToolbar() {
         toolbar.title = ""
         setSupportActionBar(toolbar)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_twotone_keyboard_arrow_left)
+
+        val iconId = if (ideaViewModel.isEditMode) {
+            R.drawable.ic_twotone_close
+        } else {
+            R.drawable.ic_twotone_keyboard_arrow_left
+        }
+        supportActionBar?.setHomeAsUpIndicator(iconId)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -184,12 +190,17 @@ class AddActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_delete -> {
-                deleteIdea()
+                val builder = AlertDialog.Builder(this, R.style.ConfirmationDialog)
+                builder.setMessage(getString(R.string.alert_delete_title))
+                        .setPositiveButton(getString(R.string.alert_delete_title_button_yes)) { _, _ -> deleteIdea() }
+                        .setNegativeButton(getString(R.string.alert_delete_title_button_no)) { d, _ -> d.dismiss() }
+                        .show()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
 
     override fun onBackPressed() {
         super.onBackPressed()
