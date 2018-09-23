@@ -1,7 +1,7 @@
 package com.luiscarino.nextidea.view.list.view.adapter
 
 import com.luiscarino.nextidea.util.ConstantsDelegateAdapter
-import com.luiscarino.nextidea.util.recyclerview.RecyclerViewType
+import io.luiscarino.abcrecyclerview.RecyclerViewType
 
 class IdeaListItemRecyclerRecyclerViewType(val id: Long,
                                            val title: String,

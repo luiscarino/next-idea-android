@@ -8,12 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.luiscarino.nextidea.R
 import com.luiscarino.nextidea.util.ConstantsDelegateAdapter
-import com.luiscarino.nextidea.util.recyclerview.DelegateAdapter
 import com.luiscarino.nextidea.util.toButtonColor
 import com.luiscarino.nextidea.util.toDrawableId
+import io.luiscarino.abcrecyclerview.DelegateAdapter
 
-class IdeaListItemDelegateAdapter(val actions: Actions) : DelegateAdapter
-<IdeaListItemDelegateAdapter.IdeaItemViewHolder, IdeaListItemRecyclerRecyclerViewType> {
+class IdeaListItemDelegateAdapter(val actions: Actions) : DelegateAdapter<IdeaListItemDelegateAdapter.IdeaItemViewHolder, IdeaListItemRecyclerRecyclerViewType> {
 
     companion object {
         const val VIEW_TYPE = ConstantsDelegateAdapter.IDEA_LIST_ITEM_VIEW_TYPE
