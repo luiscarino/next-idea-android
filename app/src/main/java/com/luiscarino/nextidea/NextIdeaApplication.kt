@@ -6,6 +6,7 @@ import com.luiscarino.nextidea.di.appModule
 import com.luiscarino.nextidea.model.room.NextIdeaDatabase
 import com.luiscarino.nextidea.ratemyapp.PreferencesContract
 import com.luiscarino.nextidea.util.populateDatabase
+import com.squareup.leakcanary.LeakCanary
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.android.startKoin
 
@@ -20,6 +21,13 @@ class NextIdeaApplication : Application() {
         startKoin(this, listOf(appModule))
         // TODO: Moved this out of callback in favor of DI. Check later how to properly implement using callback
         initDatabaseIfRequired()
+        initLeakCanary()
+    }
+
+    private fun initLeakCanary() {
+        if (BuildConfig.DEBUG) {
+            if (LeakCanary.isInAnalyzerProcess(this)) return else LeakCanary.install(this)
+        }
     }
 
     private fun initDatabaseIfRequired() {
@@ -28,7 +36,4 @@ class NextIdeaApplication : Application() {
             sharedPreferences.edit().putBoolean(PreferencesContract.PREF_IS_FIRST_LAUNCH, false).apply()
         }
     }
-
-
-
 }

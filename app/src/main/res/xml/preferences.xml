@@ -10,20 +10,20 @@
     </Preference>
     <Preference
         android:title="Privacy Policy"
-        android:icon="@drawable/ic_baseline_announcement_24px">
+        android:icon="@drawable/ic_baseline_announcement">
         <intent
             android:action="android.intent.action.VIEW"
             android:data="http://www.luiscarino.io/p/blog-page.html" />
     </Preference>
     <Preference
         android:title="Terms And Conditions"
-        android:icon="@drawable/ic_baseline_list_alt_24px">
+        android:icon="@drawable/ic_baseline_list_alt">
         <intent
             android:action="android.intent.action.VIEW"
             android:data="http://www.luiscarino.io/p/next-idea-terms-and-conditions.html" />
     </Preference>
     <com.luiscarino.nextidea.view.preferences.MyDialogPreference
-        android:icon="@drawable/ic_baseline_smartphone_24px"
+        android:icon="@drawable/ic_baseline_smartphone"
         android:key="about"
         android:title="About"
         android:dialogMessage="Next Idea v1.0.0"

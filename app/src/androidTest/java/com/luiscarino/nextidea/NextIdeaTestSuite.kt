@@ -42,7 +42,7 @@ class NextIdeaTestSuite : KoinTest {
 
     @Test
     fun test_empty_screen() {
-        onView(withId(R.id.emptyListTextView))
+        onView(withId(R.id.imageView))
                 .check(matches(isDisplayed()))
     }
 
@@ -137,6 +137,13 @@ class NextIdeaTestSuite : KoinTest {
                 .perform(click())
 
         onView(withId(R.id.action_delete))
+                .perform(click())
+
+        onView(withText("Are you sure you want to permanently delete this item?"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+
+        onView(withText("Yes"))
                 .perform(click())
 
         onView(withId(R.id.emptyListTextView))
