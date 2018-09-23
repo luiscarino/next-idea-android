@@ -73,6 +73,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
 
+    implementation 'com.github.luiscarino:abc-recyclerview:v1.0'
+
     // testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
