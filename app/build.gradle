@@ -15,8 +15,8 @@ android {
         applicationId "com.luiscarino.nextidea"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         kapt {
@@ -27,8 +27,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -72,6 +72,8 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
+
+    implementation 'com.github.luiscarino:abc-recyclerview:v1.0'
 
     // testing
     testImplementation 'junit:junit:4.12'
