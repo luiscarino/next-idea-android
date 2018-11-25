@@ -101,28 +101,29 @@ class AddActivity : AppCompatActivity() {
     private fun getStatusAndSetupView() {
         ideaViewModel.getAllStatus()?.observe(this,
                 Observer<List<Status>> { status ->
-                    val statusPositionOne = status?.get(0)
-                    ideaViewModel.selectedStatus = statusPositionOne
-                    statusTextView.text = statusPositionOne?.statusTitle
-                    statusTextView.setBackgroundColor(resources.getColor(toButtonColor(statusPositionOne?.statusTitle)))
-
+                    if (status?.isEmpty()!!.not()) {
+                        val statusPositionOne = status[0]
+                        ideaViewModel.selectedStatus = statusPositionOne
+                        statusTextView.text = statusPositionOne.statusTitle
+                        statusTextView.setBackgroundColor(resources.getColor(toButtonColor(statusPositionOne.statusTitle)))
+                    }
                 })
 
         statusTextView.setOnClickListener {
             ideaViewModel.getAllStatus()?.observe(this,
                     Observer<List<Status>> { status ->
-                        val currentStatusIndex = status?.indexOf(ideaViewModel.selectedStatus)
-                        if (currentStatusIndex != -1) {
-                            if (currentStatusIndex == status?.size?.minus(1)) {
-                                ideaViewModel.selectedStatus = status?.get(0)
-                            } else {
-                                ideaViewModel.selectedStatus = status?.get(currentStatusIndex?.inc()!!)
+                        if (status?.isEmpty()!!.not()) {
+                            val currentStatusIndex = status.indexOf(ideaViewModel.selectedStatus)
+                            if (currentStatusIndex != -1) {
+                                if (currentStatusIndex == status.size.minus(1)) {
+                                    ideaViewModel.selectedStatus = status[0]
+                                } else {
+                                    ideaViewModel.selectedStatus = status[currentStatusIndex.inc()]
+                                }
                             }
+                            statusTextView.text = ideaViewModel.selectedStatus?.statusTitle
+                            statusTextView.setBackgroundColor(resources.getColor(toButtonColor(ideaViewModel.selectedStatus?.statusTitle)))
                         }
-
-                        statusTextView.text = ideaViewModel.selectedStatus?.statusTitle
-                        statusTextView.setBackgroundColor(resources.getColor(toButtonColor(ideaViewModel.selectedStatus?.statusTitle)))
-
                     })
         }
 
@@ -131,10 +132,12 @@ class AddActivity : AppCompatActivity() {
     private fun getCategoriesAndSetupView() {
         ideaViewModel.getAllCategories()?.observe(this,
                 Observer<List<Category>> { categories ->
-                    ideaViewModel.selectedCategory = categories?.get(0)
-                    val selectedCategoryTile = ideaViewModel.selectedCategory?.categoryTitle
-                    categoryNameTextView.text = selectedCategoryTile
-                    categoryIcon.setImageResource(toDrawableId(selectedCategoryTile))
+                    if (categories != null && categories.isEmpty().not()) {
+                        ideaViewModel.selectedCategory = categories[0]
+                        val selectedCategoryTile = ideaViewModel.selectedCategory?.categoryTitle
+                        categoryNameTextView.text = selectedCategoryTile
+                        categoryIcon.setImageResource(toDrawableId(selectedCategoryTile))
+                    }
                 })
 
         categoryNameTextView.setOnClickListener {
