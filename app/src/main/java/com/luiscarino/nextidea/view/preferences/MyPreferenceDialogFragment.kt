@@ -1,7 +1,7 @@
 package com.luiscarino.nextidea.view.preferences
 
 import android.os.Bundle
-import android.support.v7.preference.PreferenceDialogFragmentCompat
+import androidx.preference.PreferenceDialogFragmentCompat
 
 class MyPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
 

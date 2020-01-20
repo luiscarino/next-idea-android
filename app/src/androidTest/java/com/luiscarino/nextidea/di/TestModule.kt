@@ -1,6 +1,6 @@
 package com.luiscarino.nextidea.di
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import com.luiscarino.nextidea.model.room.NextIdeaDatabase
 import org.koin.dsl.module.module
 

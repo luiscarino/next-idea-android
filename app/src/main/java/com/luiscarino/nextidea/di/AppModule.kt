@@ -1,6 +1,6 @@
 package com.luiscarino.nextidea.di
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import com.luiscarino.nextidea.R
 import com.luiscarino.nextidea.model.room.NextIdeaDatabase
 import com.luiscarino.nextidea.model.room.repository.IdeaRepository
@@ -47,6 +47,6 @@ val appModule = module {
         IdeaRepository(get(), get(), get())
     }
 
-    viewModel { IdeaViewModel(get(), get()) }
+    viewModel { IdeaViewModel(get()) }
 
 }

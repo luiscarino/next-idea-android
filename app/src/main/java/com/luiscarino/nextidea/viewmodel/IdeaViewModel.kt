@@ -1,20 +1,19 @@
 package com.luiscarino.nextidea.viewmodel
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.luiscarino.nextidea.model.room.entity.Category
 import com.luiscarino.nextidea.model.room.entity.Idea
 import com.luiscarino.nextidea.model.room.entity.Status
 import com.luiscarino.nextidea.model.room.repository.IdeaRepository
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
 
-class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: Application)
-    : AndroidViewModel(nextIdeaApp) {
+class IdeaViewModel(private val ideaRepository: IdeaRepository) : ViewModel() {
 
-    private var categories: LiveData<List<Category>>? = null
-    private var status: LiveData<List<Status>>? = null
-    private var ideas: LiveData<List<Idea>>? = null
+    var categories: LiveData<List<Category>> = ideaRepository.getAllCategories()
+    var status: LiveData<List<Status>> = ideaRepository.getAllStatus()
+    var ideas: LiveData<List<Idea>> = ideaRepository.getAllIdeas()
 
     var selectedCategory: Category? = null
     var selectedStatus: Status? = null
@@ -22,51 +21,32 @@ class IdeaViewModel(private val ideaRepository: IdeaRepository, nextIdeaApp: App
     var isEditMode: Boolean = false
 
     fun insert(idea: Idea) {
-        launch {
+        viewModelScope.launch {
             ideaRepository.insert(idea)
         }
     }
 
     fun update(idea: Idea) {
-        launch {
+        viewModelScope.launch {
             ideaRepository.update(idea)
         }
     }
 
-    fun getAllIdeas(): LiveData<List<Idea>>? {
-        ideas = ideaRepository.getAllIdeas()
-        return ideas
-    }
-
-    fun getIdeaById(id: Long): LiveData<Idea>? {
+    fun getIdeaById(id: Long): LiveData<Idea> {
         return ideaRepository.get(id)
     }
 
-    fun delete(id: Long): LiveData<List<Idea>>? {
-        launch {
+    fun delete(id: Long): LiveData<List<Idea>> {
+        viewModelScope.launch {
             val toDelete = ideaRepository.getIdeaById(id)
-            if (toDelete != null) {
-                ideaRepository.delete(toDelete)
-            }
+            ideaRepository.delete(toDelete)
         }
-        return getAllIdeas()
+        return ideas
     }
 
-
-    fun getAllCategories(): LiveData<List<Category>>? {
-        categories = ideaRepository.getAllCategories()
-        return categories
-    }
-
-    fun getAllStatus(): LiveData<List<Status>>? {
-        status = ideaRepository.getAllStatus()
-        return status
-    }
-
-    fun get(id: Long) = ideaRepository.get(id)
 
     fun updateSelectedCategory(position: Int): Category? {
-        selectedCategory = categories?.value?.get(position)
+        selectedCategory = categories.value?.get(position)
         return selectedCategory
     }
 

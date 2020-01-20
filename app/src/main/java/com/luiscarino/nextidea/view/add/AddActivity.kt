@@ -1,18 +1,15 @@
 package com.luiscarino.nextidea.view.add
 
 import android.app.AlertDialog
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.NavUtils
-import android.support.v7.app.AppCompatActivity
-import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
+import androidx.lifecycle.Observer
 import com.luiscarino.nextidea.R
 import com.luiscarino.nextidea.model.room.entity.Category
 import com.luiscarino.nextidea.model.room.entity.Idea
@@ -33,6 +30,7 @@ class AddActivity : AppCompatActivity() {
         const val NO_ID_PROVIDED = -1L
         const val INTENT_ARG_ID = "ARG_IDEA_ID"
         const val DELETE_RESULT_CODE = 100
+        const val DEFAULT_DELAY_MS = 500L
 
         fun getIntentInEditMode(ideaId: Long?, packageContext: Context): Intent {
             val intent = Intent(packageContext, AddActivity::class.java)
@@ -52,22 +50,16 @@ class AddActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add)
         val extraIdeaId = intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED)
         ideaViewModel.isEditMode = extraIdeaId != NO_ID_PROVIDED
-
-        setupToolbar()
-        getCategoriesAndSetupView()
-        getStatusAndSetupView()
-
-        // show keyboard on add mode
-        if (!ideaViewModel.isEditMode) {
+        if (ideaViewModel.isEditMode.not()) {
             titleTextView.postDelayed(
                     {
                         val systemService = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         systemService.showSoftInput(titleTextView, InputMethodManager.SHOW_IMPLICIT)
                     },
-                    500)
+                    DEFAULT_DELAY_MS)
         } else {
             ideaViewModel.getIdeaById(intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED))
-                    ?.observe(this, Observer {
+                    .observe(this, Observer {
                         ideaViewModel.detailIdea = it
                         ideaViewModel.selectedStatus = it?.status
                         ideaViewModel.selectedCategory = it?.category
@@ -77,12 +69,10 @@ class AddActivity : AppCompatActivity() {
                         descriptionTextView.setText(it?.description)
                     })
         }
-    }
 
-    override fun onCreateView(name: String?, context: Context?, attrs: AttributeSet?): View? {
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        return super.onCreateView(name, context, attrs)
-
+        setupToolbar()
+        getCategoriesAndSetupView()
+        getStatusAndSetupView()
     }
 
     private fun setupToolbar() {
@@ -99,9 +89,9 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun getStatusAndSetupView() {
-        ideaViewModel.getAllStatus()?.observe(this,
+        ideaViewModel.status.observe(this,
                 Observer<List<Status>> { status ->
-                    if (status?.isEmpty()!!.not()) {
+                    if (status?.isEmpty()?.not() == true) {
                         val statusPositionOne = status[0]
                         ideaViewModel.selectedStatus = statusPositionOne
                         statusTextView.text = statusPositionOne.statusTitle
@@ -110,9 +100,9 @@ class AddActivity : AppCompatActivity() {
                 })
 
         statusTextView.setOnClickListener {
-            ideaViewModel.getAllStatus()?.observe(this,
+            ideaViewModel.status.observe(this,
                     Observer<List<Status>> { status ->
-                        if (status?.isEmpty()!!.not()) {
+                        if (status?.isEmpty()?.not() == true) {
                             val currentStatusIndex = status.indexOf(ideaViewModel.selectedStatus)
                             if (currentStatusIndex != -1) {
                                 if (currentStatusIndex == status.size.minus(1)) {
@@ -120,6 +110,11 @@ class AddActivity : AppCompatActivity() {
                                 } else {
                                     ideaViewModel.selectedStatus = status[currentStatusIndex.inc()]
                                 }
+                            } else {
+                                val statusPositionOne = status[0]
+                                ideaViewModel.selectedStatus = statusPositionOne
+                                statusTextView.text = statusPositionOne.statusTitle
+                                statusTextView.setBackgroundColor(resources.getColor(toButtonColor(statusPositionOne.statusTitle)))
                             }
                             statusTextView.text = ideaViewModel.selectedStatus?.statusTitle
                             statusTextView.setBackgroundColor(resources.getColor(toButtonColor(ideaViewModel.selectedStatus?.statusTitle)))
@@ -130,7 +125,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun getCategoriesAndSetupView() {
-        ideaViewModel.getAllCategories()?.observe(this,
+        ideaViewModel.categories.observe(this,
                 Observer<List<Category>> { categories ->
                     if (categories != null && categories.isEmpty().not()) {
                         ideaViewModel.selectedCategory = categories[0]
@@ -154,7 +149,7 @@ class AddActivity : AppCompatActivity() {
         dialogBuilder.setTitle(getString(R.string.category_dialog_title))
 
         // get categories and populate dialog
-        ideaViewModel.getAllCategories()?.observe(this, Observer<List<Category>> {
+        ideaViewModel.categories.observe(this, Observer<List<Category>> {
             val categoriesList: Array<CharSequence>? = it?.map { category -> category.categoryTitle as CharSequence }?.toTypedArray()
             dialogBuilder.setItems(categoriesList) { _, which ->
                 val newCategory = ideaViewModel.updateSelectedCategory(which)
@@ -225,7 +220,7 @@ class AddActivity : AppCompatActivity() {
 
         val formatTemplate = "%s\n%s\n%s\n%s"
         ideaViewModel.getIdeaById(intent.getLongExtra(INTENT_ARG_ID, NO_ID_PROVIDED))
-                ?.observe(this, Observer {
+                .observe(this, Observer {
                     val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
                         putExtra(Intent.EXTRA_TEXT, formatTemplate.format(it?.title,
@@ -256,7 +251,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun deleteIdea() {
-        if (!ideaViewModel.isEditMode) return
+        if (ideaViewModel.isEditMode.not()) return
 
         setResult(DELETE_RESULT_CODE, Intent().apply { putExtra(INTENT_ARG_ID, ideaViewModel.detailIdea?.id) })
         finishWithAnimation()
