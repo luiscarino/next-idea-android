@@ -91,7 +91,7 @@ class AddActivity : AppCompatActivity() {
     private fun getStatusAndSetupView() {
         ideaViewModel.status.observe(this,
                 Observer<List<Status>> { status ->
-                    if (status?.isEmpty()?.not() == true) {
+                    if (status?.isEmpty()?.not() == true && ideaViewModel.isEditMode.not()) {
                         val statusPositionOne = status[0]
                         ideaViewModel.selectedStatus = statusPositionOne
                         statusTextView.text = statusPositionOne.statusTitle
@@ -127,7 +127,7 @@ class AddActivity : AppCompatActivity() {
     private fun getCategoriesAndSetupView() {
         ideaViewModel.categories.observe(this,
                 Observer<List<Category>> { categories ->
-                    if (categories != null && categories.isEmpty().not()) {
+                    if (categories != null && categories.isEmpty().not() && ideaViewModel.isEditMode.not()) {
                         ideaViewModel.selectedCategory = categories[0]
                         val selectedCategoryTile = ideaViewModel.selectedCategory?.categoryTitle
                         categoryNameTextView.text = selectedCategoryTile

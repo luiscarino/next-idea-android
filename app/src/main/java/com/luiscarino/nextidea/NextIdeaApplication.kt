@@ -11,7 +11,6 @@ class NextIdeaApplication : Application() {
         super.onCreate()
 
         startKoin(this, listOf(appModule))
-        //initDatabaseIfRequired()
         initLeakCanary()
     }
 
