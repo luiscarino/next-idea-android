@@ -5,7 +5,9 @@ import com.luiscarino.nextidea.model.room.DefaultValues
 import com.luiscarino.nextidea.model.room.NextIdeaDatabase
 import com.luiscarino.nextidea.model.room.entity.Category
 import com.luiscarino.nextidea.model.room.entity.Status
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 fun toButtonColor(statusName: String?): Int {
     return when (statusName) {
@@ -33,8 +35,8 @@ fun toDrawableId(categoryName: String?): Int {
     }
 }
 
-fun populateDatabase(database: NextIdeaDatabase) {
-    launch {
+suspend fun populateDatabase(database: NextIdeaDatabase) = withContext(Dispatchers.IO) {
+
         val categoryDao = database.categoryDao()
         categoryDao.deleteAll()
         categoryDao.insert(Category(DefaultValues.CATEGORY_OTHER, "ic_twotone_other"))
@@ -54,6 +56,6 @@ fun populateDatabase(database: NextIdeaDatabase) {
         statusDao.insert(Status(DefaultValues.STATUS_IN_PROGRESS))
         statusDao.insert(Status(DefaultValues.STATUS_DONE))
         statusDao.insert(Status(DefaultValues.STATUS_BLOCKED))
-    }
+
 
 }

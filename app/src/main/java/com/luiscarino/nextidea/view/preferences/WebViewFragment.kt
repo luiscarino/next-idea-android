@@ -1,7 +1,7 @@
 package com.luiscarino.nextidea.view.preferences
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +17,7 @@ private const val ARG_URL = "url"
  * create an instance of this fragment.
  *
  */
-class WebViewFragment : Fragment() {
+class WebViewFragment : androidx.fragment.app.Fragment() {
 
     private var param1: String? = null
 

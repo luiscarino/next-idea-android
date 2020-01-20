@@ -1,6 +1,6 @@
 package com.luiscarino.nextidea.view.list.view.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.recyclerview_idea_item.view.*
  * Encapsulates how to display a list item.
  */
 
-class IdeaListItemDelegateAdapter(val actions: Actions) : 
+class IdeaListItemDelegateAdapter(private val actions: Actions) :
 DelegateAdapter<IdeaListItemDelegateAdapter.IdeaItemViewHolder, IdeaListItemRecyclerRecyclerViewType> {
 
     companion object {
@@ -32,7 +32,7 @@ DelegateAdapter<IdeaListItemDelegateAdapter.IdeaItemViewHolder, IdeaListItemRecy
         viewHolder?.onBind(item)
     }
 
-    class IdeaItemViewHolder(itemView: View, val actions: Actions) : RecyclerView.ViewHolder(itemView) {
+    class IdeaItemViewHolder(itemView: View, private val actions: Actions) : RecyclerView.ViewHolder(itemView) {
 
         private var formatterLastEdit = itemView.context.getString(R.string.formatter_item_last_edit)
 
@@ -46,8 +46,9 @@ DelegateAdapter<IdeaListItemDelegateAdapter.IdeaItemViewHolder, IdeaListItemRecy
             itemView.lastEditTextView.text = String.format(formatterLastEdit, item?.lastEdited)
 
             val statusName = item?.statusName
-            itemView.statusTextView.text = statusName
-            itemView.statusTextView.setBackgroundColor(itemView.resources.getColor(toButtonColor(statusName)))
+            val statusTextView = itemView.statusTextView
+            statusTextView.text = statusName
+            statusTextView.setBackgroundColor(itemView.resources.getColor(toButtonColor(statusName)))
 
             itemView.setOnClickListener { actions.onCardClicked(item?.id) }
         }

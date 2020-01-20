@@ -4,6 +4,8 @@ import com.luiscarino.nextidea.model.room.dao.CategoryDao
 import com.luiscarino.nextidea.model.room.dao.IdeaDao
 import com.luiscarino.nextidea.model.room.dao.StatusDao
 import com.luiscarino.nextidea.model.room.entity.Idea
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Abstracts access to data source.
@@ -12,9 +14,9 @@ class IdeaRepository(private val ideaDao: IdeaDao,
                      private val categoryDao: CategoryDao,
                      private val statusDao: StatusDao) {
 
-    fun getAllIdeas() = ideaDao.geAllIdeas()
+     fun getAllIdeas() = ideaDao.geAllIdeas()
 
-    fun insert(idea: Idea) = ideaDao.insert(idea)
+    suspend fun insert(idea: Idea) = withContext(Dispatchers.IO) { ideaDao.insert(idea) }
 
     fun getAllCategories() = categoryDao.geAllCategories()
 
@@ -22,9 +24,9 @@ class IdeaRepository(private val ideaDao: IdeaDao,
 
     fun get(id: Long) = ideaDao.get(id)
 
-    fun update(idea: Idea) = ideaDao.update(idea)
+    suspend fun update(idea: Idea) = withContext(Dispatchers.IO) { ideaDao.update(idea) }
 
-    fun delete(idea: Idea) = ideaDao.delete(idea)
+    suspend fun delete(idea: Idea) = withContext(Dispatchers.IO) { ideaDao.delete(idea) }
 
-    fun getIdeaById(id: Long) = ideaDao.getById(id)
+    suspend fun getIdeaById(id: Long) = withContext(Dispatchers.IO) {ideaDao.getById(id) }
 }
